@@ -1,0 +1,54 @@
+{
+    "name": "labelworx/excel-converter",
+    "description": "PHP wrapper converter using Box Spout",
+    "keywords": [
+        "labelworx",
+        "excel",
+        "converter"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Chambers"
+        }
+    ],
+    "require": {
+        "php": "^7.3",
+        "ext-mbstring": "*",
+        "box/spout": "^3.1",
+        "shuchkin/simplexls": "^0.9.5"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "LabelWorx\\ExcelConverter\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LabelWorx\\ExcelConverter\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LabelWorx\\ExcelConverter\\ExcelConverterServiceProvider"
+            ],
+            "aliases": {
+                "Testpackage": "ExcelConverter"
+            }
+        }
+    }
+}
