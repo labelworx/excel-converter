@@ -45,4 +45,24 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
+    /** @test */
+    public function destination_file_can_be_overwritten()
+    {
+        $tsv_file = __DIR__ . '/../../files/from_xls.tsv';
+
+        copy(__DIR__ . '/../../files/excel.xls', $tsv_file);
+
+        ExcelConverter::source(self::XLS_FILE)->toTSV($tsv_file);
+
+        $this->assertFileExists($tsv_file);
+
+        $lines = explode("\n", file_get_contents($tsv_file));
+
+        $this->assertSame(self::TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::TSV_LINE_2, $lines[1]);
+        $this->assertSame(self::TSV_LINE_3, $lines[2]);
+
+        unlink($tsv_file);
+    }
+
 }
