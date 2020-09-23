@@ -4,6 +4,7 @@ namespace LabelWorx\ExcelConverter;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use DateTime;
+use LabelWorx\ExcelConverter\Converters\ConvertFromXLS;
 use LabelWorx\ExcelConverter\Converters\ConvertFromXLSX;
 
 class ExcelConverter
@@ -167,7 +168,8 @@ class ExcelConverter
     private function registeredConverters()
     {
         return [
-            'xlsx' => ConvertFromXLSX::class
+            'xlsx' => ConvertFromXLSX::class,
+            'xls' => ConvertFromXLS::class,
         ];
     }
 

@@ -9,7 +9,7 @@ class ConvertFromXLSX extends BaseConverter
 {
     public function convert()
     {
-        $ofp = fopen($this->destination, 'w');
+        $handle = fopen($this->destination, 'w');
 
         $reader = ReaderEntityFactory::createReaderFromFile($this->source);
 
@@ -26,11 +26,15 @@ class ConvertFromXLSX extends BaseConverter
                     $rowData
                 );
 
-                fputcsv($ofp, $rowData, $this->delimiter, $this->enclosure);
+                if (trim(end($rowData)) == '') {
+                    array_pop($rowData) ;
+                }
+
+                fputcsv($handle, $rowData, $this->delimiter, $this->enclosure);
             }
         }
 
-        fclose($ofp);
+        fclose($handle);
 
         $reader->close();
     }

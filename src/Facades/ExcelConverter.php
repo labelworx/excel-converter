@@ -4,7 +4,7 @@ namespace LabelWorx\ExcelConverter\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ExcelConverterFacade extends Facade
+class ExcelConverter extends Facade
 {
     protected static function getFacadeAccessor()
     {
