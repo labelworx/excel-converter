@@ -61,5 +61,4 @@ class ConvertFromXLS extends BaseConverter
 
         return $rowData;
     }
-
 }

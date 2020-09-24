@@ -25,13 +25,11 @@ class ConvertFromXLSX extends BaseConverter
         $handle = fopen($this->destination, 'w');
 
         foreach ($sheet->getRowIterator() as $row) {
-
             $rowData = $this->format($row->toArray());
             $rowData = $this->handleCharacterEncoding($rowData);
             $rowData = $this->pruneEmptyLastCell($rowData);
 
             fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
-
         }
 
         fclose($handle);
@@ -67,7 +65,6 @@ class ConvertFromXLSX extends BaseConverter
     {
         $count = 1;
         foreach ($reader->getSheetIterator() as $sheet) {
-
             if (is_null($this->worksheet)) {
                 return $sheet;
             }
