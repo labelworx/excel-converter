@@ -1,7 +1,7 @@
 # Changelog
 
-All notable changes to `testpackage` will be documented in this file
+All notable changes to `labelworx/excel-converter` will be documented in this file
 
-## 1.0.0 - 201X-XX-XX
+## 1.0.0 - 2020-09-24
 
-- initial release
+- Initial release
