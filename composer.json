@@ -1,6 +1,6 @@
 {
     "name": "labelworx/excel-converter",
-    "description": "PHP wrapper converter using Box Spout",
+    "description": "Quickly convert XLSX, XLS or delimited files such as CSV, TSV, Semi Colon, Pipe Delimited or \nfiles with any bespoke delimiter of your choosing to a delimited file.",
     "keywords": [
         "labelworx",
         "excel",
