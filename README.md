@@ -26,6 +26,10 @@ $excel->source('path/to/input.tsv')->toCSV('path/to/output.csv');
 
 // Converts Pipe delimited file to Semi-Colon delimited file by passing delimiters
 $excel->source('path/to/input.txt', '|')->to('path/to/output.txt', ';');
+
+// For Excel source files you can specify a worksheet by name or number
+$excel->source('path/to/input.xls')->worksheet('Sheet 2')->toCSV('path/to/output.csv');
+$excel->source('path/to/input.xlsx')->worksheet(2)->toTSV('path/to/output.tsv');
 ```
 
 ## Laravel Usage
