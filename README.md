@@ -1,7 +1,8 @@
 # Excel Converter
 
-???
-
+This package allows you to quickly convert XLSX, XLS or delimited files such as CSV, TSV, Semi Colon, Pipe Delimited or 
+files with any bespoke delimiter of your choosing to a delimited file.
+ 
 ## Installation
 
 Require the package using composer:
@@ -15,9 +16,17 @@ composer require labelworx/excel-converter
 ```php
 use LabelWorx\ExcelConverter\ExcelConverter;
 
-$planets = new ExcelConverter();
+$excel = new ExcelConverter();
 
-$planet = $planets->getRandomPlanet();
+// Simple Conversions
+$excel->source('input.xls')->toCSV('output.csv');
+$excel->source('input.xlsx')->toTSV('output.tsv');
+$excel->source('input.csv')->toTSV('output.tsv');
+$excel->source('input.tsv')->toCSV('output.csv');
+
+// Create File Controls by passing the delimiters
+// Converts pipe delimited file to semi-colon delimited
+$excel->source('input.txt', '|')->to('output.txt', ';');
 ```
 
 ## Contributing

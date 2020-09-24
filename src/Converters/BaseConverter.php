@@ -17,12 +17,22 @@ abstract class BaseConverter
     /**
      * @var string
      */
-    protected $delimiter;
+    protected $destination_delimiter;
 
     /**
      * @var string
      */
-    protected $enclosure;
+    protected $destination_enclosure;
+
+    /**
+     * @var string
+     */
+    protected $source_delimiter;
+
+    /**
+     * @var string
+     */
+    protected $source_enclosure;
 
     /**
      * BaseConverter constructor.
@@ -30,13 +40,17 @@ abstract class BaseConverter
      * @param $destination
      * @param $delimiter
      * @param $enclosure
+     * @param $source_delimiter
+     * @param $source_enclosure
      */
-    public function __construct($source, $destination, $delimiter, $enclosure)
+    public function __construct($source, $destination, $delimiter, $enclosure, $source_delimiter, $source_enclosure)
     {
         $this->source = $source;
         $this->destination = $destination;
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
+        $this->destination_delimiter = $delimiter;
+        $this->destination_enclosure = $enclosure;
+        $this->source_delimiter = $source_delimiter;
+        $this->source_enclosure = $source_enclosure;
     }
 
     abstract public function convert();

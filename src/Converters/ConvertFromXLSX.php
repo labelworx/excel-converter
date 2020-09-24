@@ -30,7 +30,7 @@ class ConvertFromXLSX extends BaseConverter
                     array_pop($rowData) ;
                 }
 
-                fputcsv($handle, $rowData, $this->delimiter, $this->enclosure);
+                fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
             }
         }
 

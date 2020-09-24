@@ -2,9 +2,9 @@
 
 namespace LabelWorx\ExcelConverter;
 
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use DateTime;
 use LabelWorx\ExcelConverter\Converters\ConvertFromCSV;
+use LabelWorx\ExcelConverter\Converters\ConvertFromCustom;
+use LabelWorx\ExcelConverter\Converters\ConvertFromTSV;
 use LabelWorx\ExcelConverter\Converters\ConvertFromXLS;
 use LabelWorx\ExcelConverter\Converters\ConvertFromXLSX;
 
@@ -31,23 +31,44 @@ class ExcelConverter
     private $file_type;
 
     /**
-     * @var string $delimiter
+     * @var string $source_delimiter
      */
-    private $delimiter;
+    private $source_delimiter;
 
     /**
-     * @var string $enclosure
+     * @var string source_enclosure
      */
-    private $enclosure;
+    private $source_enclosure;
+
+    /**
+     * @var string $destination_delimiter
+     */
+    private $destination_delimiter;
+
+    /**
+     * @var string $destination_enclosure
+     */
+    private $destination_enclosure;
 
     /**
      * @param $file
+     * @param null $delimiter
+     * @param null $enclosure
      * @return $this
      * @throws \Exception
      */
-    public function source($file)
+    public function source($file, $delimiter = null, $enclosure = null)
     {
         $this->source = $this->validateSource($file);
+
+        if ($delimiter) {
+            $this->source_delimiter = $delimiter;
+        }
+
+        if ($enclosure) {
+            $this->source_enclosure = $enclosure;
+        }
+
         $this->detectFileType();
 
         return $this;
@@ -98,8 +119,8 @@ class ExcelConverter
     public function to($destination, $delimiter = ',', $enclosure = '"')
     {
         $this->destination = $this->checkDestinationFile($destination);
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
+        $this->destination_delimiter = $delimiter;
+        $this->destination_enclosure = $enclosure;
 
         $this->checkIfCanConvert();
 
@@ -122,6 +143,12 @@ class ExcelConverter
     public function toTSV($destination)
     {
         $this->to($destination, "\t");
+    }
+
+    public function sourceDelimiter($delimiter)
+    {
+        $this->source_delimiter = $delimiter;
+        return $this;
     }
 
     /**
@@ -170,6 +197,8 @@ class ExcelConverter
     {
         return [
             'csv' => ConvertFromCSV::class,
+            'custom' => ConvertFromCustom::class,
+            'tsv' => ConvertFromTSV::class,
             'xls' => ConvertFromXLS::class,
             'xlsx' => ConvertFromXLSX::class,
         ];
@@ -179,11 +208,15 @@ class ExcelConverter
     {
         $converters = $this->registeredConverters();
 
-        $converter = new $converters[$this->file_type](
+        $converter = $this->source_delimiter ? 'custom' : $this->file_type;
+
+        $converter = new $converters[$converter](
             $this->source,
             $this->destination,
-            $this->delimiter,
-            $this->enclosure
+            $this->destination_delimiter,
+            $this->destination_enclosure,
+            $this->source_delimiter,
+            $this->source_enclosure
         );
 
         $converter->convert();

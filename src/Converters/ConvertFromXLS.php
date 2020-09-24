@@ -26,7 +26,7 @@ class ConvertFromXLS extends BaseConverter
                 $rowData[] = $cell->getValue();
             }
 
-            fputcsv($handle, $rowData, $this->delimiter, $this->enclosure);
+            fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
         }
 
         fclose($handle);
