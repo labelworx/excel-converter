@@ -4,7 +4,11 @@
     "keywords": [
         "labelworx",
         "excel",
-        "converter"
+        "converter",
+        "xls",
+        "xlsx",
+        "csv",
+        "tsv"
     ],
     "type": "library",
     "license": "MIT",

@@ -33,7 +33,7 @@ $excel->source('path/to/input.xlsx')->worksheet(2)->toTSV('path/to/output.tsv');
 ```
 
 ## Laravel Usage
-For Laravel users there is th option of using a `Facade`.
+For Laravel users there is the option of using a `Facade`.
 ```php
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
 
