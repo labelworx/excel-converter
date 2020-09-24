@@ -67,4 +67,82 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
 
         unlink($tsv_file);
     }
+
+    /** @test */
+    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_name()
+    {
+        $tsv_file = sys_get_temp_dir().'/output.tsv';
+
+        ExcelConverter::source(self::XLS_FILE)
+            ->worksheet('Second Sheet')
+            ->toTSV($tsv_file);
+
+        $this->assertFileExists($tsv_file);
+
+        $lines = explode("\n", trim(file_get_contents($tsv_file)));
+
+        $this->assertExpectedLineCount(2, $tsv_file);
+        $this->assertSame(self::SHEET_2_TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::SHEET_2_TSV_LINE_2, $lines[1]);
+
+        unlink($tsv_file);
+    }
+
+    /** @test */
+    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_name()
+    {
+        $csv_file = sys_get_temp_dir().'/output.csv';
+
+        ExcelConverter::source(self::XLS_FILE)
+            ->worksheet('Third')
+            ->toCSV($csv_file);
+
+        $this->assertFileExists($csv_file);
+
+        $lines = explode("\n", trim(file_get_contents($csv_file)));
+
+        $this->assertExpectedLineCount(1, $csv_file);
+        $this->assertSame('something', $lines[0]);
+
+        unlink($csv_file);
+    }
+
+    /** @test */
+    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number()
+    {
+        $tsv_file = sys_get_temp_dir().'/output.tsv';
+
+        ExcelConverter::source(self::XLS_FILE)
+            ->worksheet(2) // Second Sheet
+            ->toTSV($tsv_file);
+
+        $this->assertFileExists($tsv_file);
+
+        $lines = explode("\n", trim(file_get_contents($tsv_file)));
+
+        $this->assertExpectedLineCount(2, $tsv_file);
+        $this->assertSame(self::SHEET_2_TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::SHEET_2_TSV_LINE_2, $lines[1]);
+
+        unlink($tsv_file);
+    }
+
+    /** @test */
+    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number()
+    {
+        $csv_file = sys_get_temp_dir().'/output.csv';
+
+        ExcelConverter::source(self::XLS_FILE)
+            ->worksheet(3) // Third
+            ->toCSV($csv_file);
+
+        $this->assertFileExists($csv_file);
+
+        $lines = explode("\n", trim(file_get_contents($csv_file)));
+
+        $this->assertExpectedLineCount(1, $csv_file);
+        $this->assertSame('something', $lines[0]);
+
+        unlink($csv_file);
+    }
 }

@@ -12,8 +12,13 @@ class ConvertFromXLS extends BaseConverter
         $reader->setReadDataOnly(true);
         $spreadsheet = $reader->load($this->source);
 
-        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet = $this->getWorksheet($spreadsheet);
 
+        $this->processSheet($worksheet);
+    }
+
+    private function processSheet($worksheet)
+    {
         $handle = fopen($this->destination, 'w');
 
         foreach ($worksheet->getRowIterator() as $workSheetRow) {
@@ -31,6 +36,19 @@ class ConvertFromXLS extends BaseConverter
         }
 
         fclose($handle);
+    }
+
+    private function getWorksheet($spreadsheet)
+    {
+        if (is_string($this->worksheet)) {
+            return $spreadsheet->getSheetByName($this->worksheet);
+        }
+
+        if (is_int($this->worksheet)) {
+            return $spreadsheet->getSheet($this->worksheet - 1);
+        }
+
+        return $spreadsheet->getActiveSheet();
     }
 
     private function pruneEmptyLastCell($rowData)

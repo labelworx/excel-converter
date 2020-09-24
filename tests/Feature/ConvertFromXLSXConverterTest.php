@@ -87,6 +87,26 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
     }
 
     /** @test */
+    public function an_xlsx_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number()
+    {
+        $tsv_file = sys_get_temp_dir().'/from_xlsx.tsv';
+
+        ExcelConverter::source(self::XLSX_FILE)
+            ->worksheet(2) // 'Another Sheet'
+            ->toTSV($tsv_file);
+
+        $this->assertFileExists($tsv_file);
+
+        $lines = explode("\n", trim(file_get_contents($tsv_file)));
+
+        $this->assertExpectedLineCount(2, $tsv_file);
+        $this->assertSame(self::SHEET_2_TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::SHEET_2_TSV_LINE_2, $lines[1]);
+
+        unlink($tsv_file);
+    }
+
+    /** @test */
     public function an_xlsx_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number()
     {
         $csv_file = sys_get_temp_dir().'/from_xlsx.csv';
