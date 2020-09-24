@@ -7,7 +7,7 @@ use Tests\ConverterTestCase;
 
 class ConvertFromXLSXConverterTest extends ConverterTestCase
 {
-    const XLSX_FILE  = __DIR__ . '/../../files/excel.xlsx';
+    const XLSX_FILE = __DIR__.'/../../files/excel.xlsx';
 
     /** @test */
     public function an_xlsx_file_can_be_converted_to_a_csv()

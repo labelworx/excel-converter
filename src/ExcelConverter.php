@@ -11,27 +11,27 @@ use LabelWorx\ExcelConverter\Converters\ConvertFromXLSX;
 class ExcelConverter
 {
     /**
-     * @var string $source
+     * @var string
      */
     private $source;
 
     /**
-     * @var int $worksheet
+     * @var int
      */
     private $worksheet = 1;
 
     /**
-     * @var string $destination
+     * @var string
      */
     private $destination;
 
     /**
-     * @var string $file_type
+     * @var string
      */
     private $file_type;
 
     /**
-     * @var string $source_delimiter
+     * @var string
      */
     private $source_delimiter;
 
@@ -41,12 +41,12 @@ class ExcelConverter
     private $source_enclosure;
 
     /**
-     * @var string $destination_delimiter
+     * @var string
      */
     private $destination_delimiter;
 
     /**
-     * @var string $destination_enclosure
+     * @var string
      */
     private $destination_enclosure;
 
@@ -82,19 +82,19 @@ class ExcelConverter
     private function validateSource($file)
     {
         if (! is_string($file)) {
-            throw new \Exception("Specified source file should be a string");
+            throw new \Exception('Specified source file should be a string');
         }
 
         if (is_dir($file)) {
-            throw new \Exception("Specified source file is a directory");
+            throw new \Exception('Specified source file is a directory');
         }
 
         if (! file_exists($file)) {
-            throw new \Exception("Specified source does not exist");
+            throw new \Exception('Specified source does not exist');
         }
 
         if (! file_exists($file) || ! is_readable($file)) {
-            throw new \Exception("Specified source file is not readable");
+            throw new \Exception('Specified source file is not readable');
         }
 
         return $file;
@@ -107,6 +107,7 @@ class ExcelConverter
     public function worksheet($number)
     {
         $this->worksheet = $number;
+
         return $this;
     }
 
@@ -148,6 +149,7 @@ class ExcelConverter
     public function sourceDelimiter($delimiter)
     {
         $this->source_delimiter = $delimiter;
+
         return $this;
     }
 
@@ -221,5 +223,4 @@ class ExcelConverter
 
         $converter->convert();
     }
-
 }
