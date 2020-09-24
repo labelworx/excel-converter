@@ -17,7 +17,7 @@
         "php": "^7.3",
         "ext-mbstring": "*",
         "box/spout": "^3.1",
-        "shuchkin/simplexls": "^0.9.5"
+        "phpoffice/phpspreadsheet": "^1.14"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LabelWorx\\ExcelConverter\\Tests\\": "tests"
+            "Tests\\": "tests"
         }
     },
     "scripts": {

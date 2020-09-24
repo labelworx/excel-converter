@@ -29,6 +29,15 @@ $excel->source('input.tsv')->toCSV('output.csv');
 $excel->source('input.txt', '|')->to('output.txt', ';');
 ```
 
+## Laravel Usage
+For Laravel users there is th option of using a `Facade`.
+```php
+use LabelWorx\ExcelConverter\ExcelConverter;
+
+ExcelConverter::source('input.xls')->toCSV('output.csv');
+```
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
