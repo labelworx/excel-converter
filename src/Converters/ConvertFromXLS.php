@@ -25,9 +25,23 @@ class ConvertFromXLS extends BaseConverter
                 $rowData[] = $cell->getValue();
             }
 
+            $rowData = $this->pruneEmptyLastCell($rowData);
+
             fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
         }
 
         fclose($handle);
     }
+
+    private function pruneEmptyLastCell($rowData)
+    {
+        $count = count($rowData) - 1;
+
+        if ($rowData[$count] == '') {
+            unset($rowData[$count]);
+        }
+
+        return $rowData;
+    }
+
 }

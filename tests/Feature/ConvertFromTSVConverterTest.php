@@ -19,6 +19,7 @@ class ConvertFromTSVConverterTest extends ConverterTestCase
 
         $lines = explode("\n", file_get_contents(self::CSV_FILE));
 
+        $this->assertExpectedLineCount(3, self::CSV_FILE);
         $this->assertStringContainsString(self::CSV_LINE_1, $lines[0]);
         $this->assertStringContainsString(self::CSV_LINE_2, $lines[1]);
         $this->assertStringContainsString(self::CSV_LINE_3, $lines[2]);

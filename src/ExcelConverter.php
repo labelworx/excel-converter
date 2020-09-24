@@ -16,9 +16,9 @@ class ExcelConverter
     private $source;
 
     /**
-     * @var int
+     * @var string|int|null
      */
-    private $worksheet = 1;
+    private $worksheet = null;
 
     /**
      * @var string
@@ -101,12 +101,12 @@ class ExcelConverter
     }
 
     /**
-     * @param int $number
+     * @param string|int|null $sheet
      * @return $this
      */
-    public function worksheet($number)
+    public function worksheet($sheet)
     {
-        $this->worksheet = $number;
+        $this->worksheet = $sheet;
 
         return $this;
     }
@@ -218,7 +218,8 @@ class ExcelConverter
             $this->destination_delimiter,
             $this->destination_enclosure,
             $this->source_delimiter,
-            $this->source_enclosure
+            $this->source_enclosure,
+            $this->worksheet
         );
 
         $converter->convert();

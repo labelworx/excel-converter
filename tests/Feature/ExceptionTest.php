@@ -92,4 +92,18 @@ class ExceptionTest extends ConverterTestCase
             $this->assertSame('You did not specify a destination file', $e->getMessage());
         }
     }
+
+    /** @test */
+    public function an_exception_is_thrown_when_the_worksheet_cannot_be_found()
+    {
+        $source_file = __DIR__.'/../../files/excel.xlsx';
+
+        try {
+            ExcelConverter::source($source_file)
+                ->worksheet('foobar')
+                ->toCSV(__DIR__.'/../../files/output.csv');
+        } catch (\Exception $e) {
+            $this->assertSame('Worksheet not found [foobar]', $e->getMessage());
+        }
+    }
 }

@@ -35,6 +35,11 @@ abstract class BaseConverter
     protected $source_enclosure;
 
     /**
+     * @var int|string|null
+     */
+    protected $worksheet;
+
+    /**
      * BaseConverter constructor.
      * @param $source
      * @param $destination
@@ -42,8 +47,9 @@ abstract class BaseConverter
      * @param $enclosure
      * @param $source_delimiter
      * @param $source_enclosure
+     * @param $worksheet
      */
-    public function __construct($source, $destination, $delimiter, $enclosure, $source_delimiter, $source_enclosure)
+    public function __construct($source, $destination, $delimiter, $enclosure, $source_delimiter, $source_enclosure, $worksheet)
     {
         $this->source = $source;
         $this->destination = $destination;
@@ -51,6 +57,7 @@ abstract class BaseConverter
         $this->destination_enclosure = $enclosure;
         $this->source_delimiter = $source_delimiter;
         $this->source_enclosure = $source_enclosure;
+        $this->worksheet = $worksheet;
     }
 
     abstract public function convert();

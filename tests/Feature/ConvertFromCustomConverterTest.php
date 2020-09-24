@@ -19,6 +19,7 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
 
         $lines = explode("\n", file_get_contents(self::CSV_FILE));
 
+        $this->assertExpectedLineCount(3, self::CSV_FILE);
         $this->assertStringContainsString(self::CSV_LINE_1, $lines[0]);
         $this->assertStringContainsString(self::CSV_LINE_2, $lines[1]);
         $this->assertStringContainsString(self::CSV_LINE_3, $lines[2]);
@@ -38,6 +39,7 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
 
         $lines = explode("\n", file_get_contents($output));
 
+        $this->assertExpectedLineCount(3, $output);
         $this->assertStringContainsString('one|two|three|four', $lines[0]);
         $this->assertStringContainsString('blue|orange|green|blue', $lines[1]);
         $this->assertStringContainsString('"Chris, Chambers"|"(0123) 123 3455"|"Some House"|3.56', $lines[2]);

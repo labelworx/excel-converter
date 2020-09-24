@@ -9,34 +9,81 @@ class ConvertFromXLSX extends BaseConverter
 {
     public function convert()
     {
-        $handle = fopen($this->destination, 'w');
-
         $reader = ReaderEntityFactory::createReaderFromFile($this->source);
 
         $reader->open($this->source);
 
-        foreach ($reader->getSheetIterator() as $sheet) {
-            foreach ($sheet->getRowIterator() as $row) {
-                $rowData = $this->format($row->toArray());
+        $sheet = $this->getWorksheet($reader);
 
-                $rowData = array_map(
-                    function ($arg) {
-                        return mb_convert_encoding($arg, 'UTF-8', mb_detect_encoding($arg));
-                    },
-                    $rowData
-                );
+        $this->processSheet($sheet);
 
-                if (trim(end($rowData)) == '') {
-                    array_pop($rowData);
-                }
+        $reader->close();
+    }
 
-                fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
-            }
+    private function processSheet($sheet)
+    {
+        $handle = fopen($this->destination, 'w');
+
+        foreach ($sheet->getRowIterator() as $row) {
+
+            $rowData = $this->format($row->toArray());
+            $rowData = $this->handleCharacterEncoding($rowData);
+            $rowData = $this->pruneEmptyLastCell($rowData);
+
+            fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
+
         }
 
         fclose($handle);
+    }
 
-        $reader->close();
+    private function handleCharacterEncoding($rowData)
+    {
+        return array_map(
+            function ($arg) {
+                return mb_convert_encoding($arg, 'UTF-8', mb_detect_encoding($arg));
+            },
+            $rowData
+        );
+    }
+
+    private function pruneEmptyLastCell($rowData)
+    {
+        $count = count($rowData) - 1;
+
+        if ($rowData[$count] == '') {
+            unset($rowData[$count]);
+        }
+
+        return $rowData;
+    }
+
+    /**
+     * @param $reader
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getWorksheet($reader)
+    {
+        $count = 1;
+        foreach ($reader->getSheetIterator() as $sheet) {
+
+            if (is_null($this->worksheet)) {
+                return $sheet;
+            }
+
+            if ($sheetName = $sheet->getName() == $this->worksheet) {
+                return $sheet;
+            }
+
+            if ($count == $this->worksheet) {
+                return $sheet;
+            }
+
+            $count++;
+        }
+
+        throw new \Exception("Worksheet not found [{$this->worksheet}]");
     }
 
     /**
