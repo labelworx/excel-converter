@@ -17,7 +17,6 @@ class ConvertFromXLS extends BaseConverter
         $handle = fopen($this->destination, 'w');
 
         foreach ($worksheet->getRowIterator() as $workSheetRow) {
-
             $cellIterator = $workSheetRow->getCellIterator();
             $cellIterator->setIterateOnlyExistingCells(false);
 

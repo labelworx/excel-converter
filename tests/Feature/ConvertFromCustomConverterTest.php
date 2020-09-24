@@ -7,8 +7,8 @@ use Tests\ConverterTestCase;
 
 class ConvertFromCustomConverterTest extends ConverterTestCase
 {
-    const TSV_FILE   = __DIR__ . '/../../files/test.tsv';
-    const CSV_FILE   = __DIR__ . '/../../files/out.csv';
+    const TSV_FILE = __DIR__.'/../../files/test.tsv';
+    const CSV_FILE = __DIR__.'/../../files/out.csv';
 
     /** @test */
     public function an_tsv_file_can_be_converted_to_a_csv()
@@ -29,10 +29,10 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
     /** @test */
     public function a_custom_file_can_be_converted_to_a_custom_file()
     {
-        $input = __DIR__ . '/../../files/semi-colon.csv';
-        $output = __DIR__ . '/../../files/pipe.csv';
+        $input = __DIR__.'/../../files/semi-colon.csv';
+        $output = __DIR__.'/../../files/pipe.csv';
 
-        ExcelConverter::source($input, ";")->to($output, '|');
+        ExcelConverter::source($input, ';')->to($output, '|');
 
         $this->assertFileExists($output);
 
@@ -44,5 +44,4 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
 
         unlink($output);
     }
-
 }

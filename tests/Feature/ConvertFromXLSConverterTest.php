@@ -7,7 +7,7 @@ use Tests\ConverterTestCase;
 
 class ConvertFromXLSConverterTest extends ConverterTestCase
 {
-    const XLS_FILE   = __DIR__ . '/../../files/excel.xls';
+    const XLS_FILE = __DIR__.'/../../files/excel.xls';
 
     /** @test */
     public function an_xls_file_can_be_converted_to_a_csv()
@@ -48,9 +48,9 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     /** @test */
     public function destination_file_can_be_overwritten()
     {
-        $tsv_file = __DIR__ . '/../../files/from_xls.tsv';
+        $tsv_file = __DIR__.'/../../files/from_xls.tsv';
 
-        copy(__DIR__ . '/../../files/excel.xls', $tsv_file);
+        copy(__DIR__.'/../../files/excel.xls', $tsv_file);
 
         ExcelConverter::source(self::XLS_FILE)->toTSV($tsv_file);
 
@@ -64,5 +64,4 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
 
         unlink($tsv_file);
     }
-
 }

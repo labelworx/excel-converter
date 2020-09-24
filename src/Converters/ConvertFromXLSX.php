@@ -27,7 +27,7 @@ class ConvertFromXLSX extends BaseConverter
                 );
 
                 if (trim(end($rowData)) == '') {
-                    array_pop($rowData) ;
+                    array_pop($rowData);
                 }
 
                 fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
@@ -47,19 +47,18 @@ class ConvertFromXLSX extends BaseConverter
     {
         $result = [];
         foreach ($row as $element) {
-
             if (is_string($element)) {
-                $result[] = (string)$element;
+                $result[] = (string) $element;
                 continue;
             }
 
             if (is_int($element)) {
-                $result[] = (string)$element;
+                $result[] = (string) $element;
                 continue;
             }
 
             if (is_float($element)) {
-                $result[] = (float)$element;
+                $result[] = (float) $element;
                 continue;
             }
 
@@ -72,7 +71,7 @@ class ConvertFromXLSX extends BaseConverter
                 if ($element instanceof DateTime) {
                     $result[] = $element->format('Y-m-d H:i:s');
                 } else {
-                    die('Element of Type ' . get_class($element) . '  discovered.');
+                    exit('Element of Type '.get_class($element).'  discovered.');
                 }
             }
         }

@@ -19,14 +19,14 @@ class ConverterTestCase extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            ExcelConverterServiceProvider::class
+            ExcelConverterServiceProvider::class,
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Excel' => ExcelConverter::class
+            'Excel' => ExcelConverter::class,
         ];
     }
 }
