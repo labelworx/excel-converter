@@ -139,11 +139,12 @@ class ExcelConverter
 
     /**
      * @param $destination
+     * @param string $enclosure
      * @throws \Exception
      */
-    public function toTSV($destination)
+    public function toTSV($destination, $enclosure = '"')
     {
-        $this->to($destination, "\t");
+        $this->to($destination, "\t", $enclosure);
     }
 
     public function sourceDelimiter($delimiter)
