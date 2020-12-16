@@ -47,7 +47,6 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-
     /** @test */
     public function an_xlsx_file_can_be_converted_to_a_tsv_without_an_enclosure()
     {

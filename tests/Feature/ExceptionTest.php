@@ -100,15 +100,15 @@ class ExceptionTest extends ConverterTestCase
             ->toCSV(__DIR__ . '/../../files/output.csv');
     }
 
-/** @test */
-public function an_exception_is_thrown_when_a_file_is_unreadable()
-{
-    copy(self::XLS_FILE, self::UNREADABLE_FILE);
-    chmod(self::UNREADABLE_FILE, 0222);
+    /** @test */
+    public function an_exception_is_thrown_when_a_file_is_unreadable()
+    {
+        copy(self::XLS_FILE, self::UNREADABLE_FILE);
+        chmod(self::UNREADABLE_FILE, 0222);
 
-    $this->expectException(\Exception::class);
-    $this->expectExceptionMessage('Specified source file is not readable');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Specified source file is not readable');
 
-    ExcelConverter::source(self::UNREADABLE_FILE)->toCSV(__DIR__ . '/../../files/output.csv');
-}
+        ExcelConverter::source(self::UNREADABLE_FILE)->toCSV(__DIR__ . '/../../files/output.csv');
+    }
 }
