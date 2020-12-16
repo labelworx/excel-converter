@@ -33,7 +33,7 @@ class ConvertFromXLS extends BaseConverter
             $rowData = $this->pruneEmptyLastCell($rowData);
 
             if ($this->destination_enclosure == '') {
-                fwrite($handle, implode($this->destination_delimiter, $rowData) . "\n");
+                fwrite($handle, implode($this->destination_delimiter, $rowData)."\n");
             } else {
                 fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
             }
