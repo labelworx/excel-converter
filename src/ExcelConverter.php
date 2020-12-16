@@ -93,7 +93,7 @@ class ExcelConverter
             throw new \Exception('Specified source does not exist');
         }
 
-        if (! file_exists($file) || ! is_readable($file)) {
+        if (! is_readable($file)) {
             throw new \Exception('Specified source file is not readable');
         }
 

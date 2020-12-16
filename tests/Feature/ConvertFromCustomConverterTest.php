@@ -11,7 +11,7 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
     const CSV_FILE = __DIR__.'/../../files/out.csv';
 
     /** @test */
-    public function an_tsv_file_can_be_converted_to_a_csv()
+    public function a_tsv_file_can_be_converted_to_a_csv()
     {
         ExcelConverter::source(self::TSV_FILE, "\t", '"')->toCSV(self::CSV_FILE);
 
@@ -33,7 +33,7 @@ class ConvertFromCustomConverterTest extends ConverterTestCase
         $input = __DIR__.'/../../files/semi-colon.csv';
         $output = __DIR__.'/../../files/pipe.csv';
 
-        ExcelConverter::source($input, ';')->to($output, '|');
+        ExcelConverter::source($input)->sourceDelimiter(';')->to($output, '|');
 
         $this->assertFileExists($output);
 

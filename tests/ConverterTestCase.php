@@ -15,6 +15,7 @@ class ConverterTestCase extends TestCase
     const TSV_LINE_1 = "one\ttwo\tthree\tfour";
     const TSV_LINE_2 = "blue\torange\tgreen\tblue";
     const TSV_LINE_3 = "\"Chris, Chambers\"\t\"(0123) 123 3455\"\t\"Some House\"\t3.56";
+    const TSV_LINE_4 = "Chris, Chambers\t(0123) 123 3455\tSome House\t3.56";
 
     const SHEET_2_TSV_LINE_1 = "pink\tgreen\tblue";
     const SHEET_2_TSV_LINE_2 = "red\tpurple\torange";
