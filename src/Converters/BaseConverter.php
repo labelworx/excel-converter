@@ -40,6 +40,11 @@ abstract class BaseConverter
     protected $worksheet;
 
     /**
+     * @var string
+     */
+    protected $date_format;
+
+    /**
      * BaseConverter constructor.
      * @param $source
      * @param $destination
@@ -48,8 +53,9 @@ abstract class BaseConverter
      * @param $source_delimiter
      * @param $source_enclosure
      * @param $worksheet
+     * @param $date_format
      */
-    public function __construct($source, $destination, $delimiter, $enclosure, $source_delimiter, $source_enclosure, $worksheet)
+    public function __construct($source, $destination, $delimiter, $enclosure, $source_delimiter, $source_enclosure, $worksheet, $date_format)
     {
         $this->source = $source;
         $this->destination = $destination;
@@ -58,6 +64,7 @@ abstract class BaseConverter
         $this->source_delimiter = $source_delimiter;
         $this->source_enclosure = $source_enclosure;
         $this->worksheet = $worksheet;
+        $this->date_format = $date_format;
     }
 
     abstract public function convert();

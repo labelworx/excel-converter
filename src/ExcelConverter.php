@@ -51,6 +51,11 @@ class ExcelConverter
     private $destination_enclosure;
 
     /**
+     * @var string
+     */
+    private $date_format = 'Y-m-d';
+
+    /**
      * @param $file
      * @param null $delimiter
      * @param null $enclosure
@@ -147,9 +152,24 @@ class ExcelConverter
         $this->to($destination, "\t", $enclosure);
     }
 
+    /**
+     * @param $delimiter
+     * @return $this
+     */
     public function sourceDelimiter($delimiter)
     {
         $this->source_delimiter = $delimiter;
+
+        return $this;
+    }
+
+    /**
+     * @param $format
+     * @return $this
+     */
+    public function exportDateFormat($format)
+    {
+        $this->date_format = $format;
 
         return $this;
     }
@@ -220,7 +240,8 @@ class ExcelConverter
             $this->destination_enclosure,
             $this->source_delimiter,
             $this->source_enclosure,
-            $this->worksheet
+            $this->worksheet,
+            $this->date_format,
         );
 
         $converter->convert();

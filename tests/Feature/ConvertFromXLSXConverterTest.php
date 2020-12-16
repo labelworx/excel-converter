@@ -21,9 +21,9 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
         $lines = explode("\n", file_get_contents($csv_file));
 
         $this->assertExpectedLineCount(4, $csv_file);
-        $this->assertSame(self::CSV_LINE_1, $lines[0]);
-        $this->assertSame(self::CSV_LINE_2, $lines[1]);
-        $this->assertSame(self::CSV_LINE_3, $lines[2]);
+        $this->assertSame(self::XLS_CONVERTED_CSV_LINE_1, $lines[0]);
+        $this->assertSame(self::XLS_CONVERTED_CSV_LINE_2, $lines[1]);
+        $this->assertSame(self::XLS_CONVERTED_CSV_LINE_3, $lines[2]);
 
         unlink($csv_file);
     }
@@ -40,9 +40,9 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
         $lines = explode("\n", file_get_contents($tsv_file));
 
         $this->assertExpectedLineCount(4, $tsv_file);
-        $this->assertSame(self::TSV_LINE_1, $lines[0]);
-        $this->assertSame(self::TSV_LINE_2, $lines[1]);
-        $this->assertSame(self::TSV_LINE_3, $lines[2]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_2, $lines[1]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_3, $lines[2]);
 
         unlink($tsv_file);
     }
@@ -60,9 +60,9 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
         $lines = explode("\n", file_get_contents($tsv_file));
 
         $this->assertExpectedLineCount(4, $tsv_file);
-        $this->assertSame(self::TSV_LINE_1, $lines[0]);
-        $this->assertSame(self::TSV_LINE_2, $lines[1]);
-        $this->assertSame(self::TSV_LINE_4, $lines[2]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_1, $lines[0]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_2, $lines[1]);
+        $this->assertSame(self::XLS_CONVERTED_TSV_LINE_4, $lines[2]);
 
         unlink($tsv_file);
     }

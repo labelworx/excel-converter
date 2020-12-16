@@ -117,7 +117,7 @@ class ConvertFromXLSX extends BaseConverter
 
             if (is_object($element)) {
                 if ($element instanceof DateTime) {
-                    $result[] = $element->format('Y-m-d H:i:s');
+                    $result[] = $element->format($this->date_format);
                 } else {
                     exit('Element of Type '.get_class($element).'  discovered.');
                 }

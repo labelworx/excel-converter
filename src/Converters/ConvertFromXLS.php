@@ -3,13 +3,14 @@
 namespace LabelWorx\ExcelConverter\Converters;
 
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ConvertFromXLS extends BaseConverter
 {
     public function convert()
     {
         $reader = new Xls();
-        $reader->setReadDataOnly(true);
+        $reader->setReadDataOnly(false);
         $spreadsheet = $reader->load($this->source);
 
         $worksheet = $this->getWorksheet($spreadsheet);
@@ -27,6 +28,12 @@ class ConvertFromXLS extends BaseConverter
 
             $rowData = [];
             foreach ($cellIterator as $cell) {
+
+                if (Date::isDateTime($cell)) {
+                    $rowData[] = $this->getDate($cell);
+                    continue;
+                }
+
                 $rowData[] = $cell->getValue();
             }
 
@@ -40,6 +47,11 @@ class ConvertFromXLS extends BaseConverter
         }
 
         fclose($handle);
+    }
+
+    private function getDate($cell)
+    {
+        return (new \DateTime())->setTimestamp(Date::excelToTimestamp($cell->getValue()))->format($this->date_format);
     }
 
     private function getWorksheet($spreadsheet)
