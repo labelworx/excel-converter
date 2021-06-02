@@ -28,7 +28,6 @@ class ConvertFromXLS extends BaseConverter
 
             $rowData = [];
             foreach ($cellIterator as $cell) {
-
                 if (Date::isDateTime($cell)) {
                     $rowData[] = $this->getDate($cell);
                     continue;
