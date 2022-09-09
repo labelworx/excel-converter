@@ -7,11 +7,11 @@ use Tests\ConverterTestCase;
 
 class ConvertFromTSVConverterTest extends ConverterTestCase
 {
-    const TSV_FILE = __DIR__.'/../../files/test.tsv';
-    const CSV_FILE = __DIR__.'/../../files/out.csv';
+    private const TSV_FILE = __DIR__.'/../../files/test.tsv';
+    private const CSV_FILE = __DIR__.'/../../files/out.csv';
 
     /** @test */
-    public function a_tsv_file_can_be_converted_to_a_csv()
+    public function a_tsv_file_can_be_converted_to_a_csv(): void
     {
         ExcelConverter::source(self::TSV_FILE)->toCSV(self::CSV_FILE);
 

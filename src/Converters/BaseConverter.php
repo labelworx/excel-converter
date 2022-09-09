@@ -67,5 +67,5 @@ abstract class BaseConverter
         $this->date_format = $date_format;
     }
 
-    abstract public function convert();
+    abstract public function convert(): void;
 }

@@ -4,10 +4,10 @@ namespace LabelWorx\ExcelConverter\Converters;
 
 class ConvertFromCSV extends BaseConverter
 {
-    public function convert()
+    public function convert(): void
     {
-        $source_handle = fopen($this->source, 'r');
-        $destination_handle = fopen($this->destination, 'w');
+        $source_handle = fopen($this->source, 'rb');
+        $destination_handle = fopen($this->destination, 'wb');
 
         while (($row = fgetcsv($source_handle)) !== false) {
             fputcsv($destination_handle, $row, $this->destination_delimiter, $this->destination_enclosure ?: '"');

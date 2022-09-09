@@ -7,7 +7,7 @@ use DateTime;
 
 class ConvertFromXLSX extends BaseConverter
 {
-    public function convert()
+    public function convert(): void
     {
         $reader = ReaderEntityFactory::createReaderFromFile($this->source);
 
@@ -20,16 +20,17 @@ class ConvertFromXLSX extends BaseConverter
         $reader->close();
     }
 
-    private function processSheet($sheet)
+    private function processSheet($sheet): void
     {
-        $handle = fopen($this->destination, 'w');
+        $handle = fopen($this->destination, 'wb');
 
         foreach ($sheet->getRowIterator() as $row) {
             $rowData = $this->format($row->toArray());
             $rowData = $this->handleCharacterEncoding($rowData);
             $rowData = $this->pruneEmptyLastCell($rowData);
+            $rowData = $this->removeNewLines($rowData);
 
-            if ($this->destination_enclosure == '') {
+            if ($this->destination_enclosure === '') {
                 fwrite($handle, implode($this->destination_delimiter, $rowData)."\n");
             } else {
                 fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
@@ -39,21 +40,30 @@ class ConvertFromXLSX extends BaseConverter
         fclose($handle);
     }
 
-    private function handleCharacterEncoding($rowData)
+    private function handleCharacterEncoding($rowData): array
     {
         return array_map(
-            function ($arg) {
+            static function ($arg) {
                 return mb_convert_encoding($arg, 'UTF-8', mb_detect_encoding($arg));
             },
             $rowData
         );
     }
 
+    private function removeNewLines($cells): array
+    {
+        foreach ($cells as $key => $cell) {
+            $cells[$key] = str_replace("\n", " ", $cell);
+        }
+
+        return $cells;
+    }
+
     private function pruneEmptyLastCell($rowData)
     {
         $count = count($rowData) - 1;
 
-        if ($rowData[$count] == '') {
+        if ($rowData[$count] === '') {
             unset($rowData[$count]);
         }
 
@@ -73,11 +83,11 @@ class ConvertFromXLSX extends BaseConverter
                 return $sheet;
             }
 
-            if ($sheetName = $sheet->getName() == $this->worksheet) {
+            if ($sheet->getName() === $this->worksheet) {
                 return $sheet;
             }
 
-            if ($count == $this->worksheet) {
+            if ($count === $this->worksheet) {
                 return $sheet;
             }
 
@@ -91,7 +101,7 @@ class ConvertFromXLSX extends BaseConverter
      * @param array $row
      * @return array
      */
-    private function format(array $row)
+    private function format(array $row): array
     {
         $result = [];
         foreach ($row as $element) {

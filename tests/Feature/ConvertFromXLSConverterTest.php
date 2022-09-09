@@ -7,10 +7,10 @@ use Tests\ConverterTestCase;
 
 class ConvertFromXLSConverterTest extends ConverterTestCase
 {
-    const XLS_FILE = __DIR__.'/../../files/excel.xls';
+    private const XLS_FILE = __DIR__.'/../../files/excel.xls';
 
     /** @test */
-    public function an_xls_file_can_be_converted_to_a_csv()
+    public function an_xls_file_can_be_converted_to_a_csv(): void
     {
         $csv_file = sys_get_temp_dir().'/from_xls.csv';
 
@@ -29,7 +29,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_can_be_converted_to_a_csv_with_date_format()
+    public function an_xls_file_can_be_converted_to_a_csv_with_date_format(): void
     {
         $csv_file = sys_get_temp_dir().'/from_xls.csv';
 
@@ -48,7 +48,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_can_be_converted_to_a_tsv()
+    public function an_xls_file_can_be_converted_to_a_tsv(): void
     {
         $tsv_file = sys_get_temp_dir().'/from_xls.tsv';
 
@@ -67,7 +67,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_can_be_converted_to_a_tsv_without_an_enclosure()
+    public function an_xls_file_can_be_converted_to_a_tsv_without_an_enclosure(): void
     {
         $tsv_file = sys_get_temp_dir().'/from_xls.tsv';
 
@@ -86,7 +86,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function destination_file_can_be_overwritten()
+    public function destination_file_can_be_overwritten(): void
     {
         $tsv_file = __DIR__.'/../../files/from_xls.tsv';
 
@@ -107,7 +107,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_name()
+    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_name(): void
     {
         $tsv_file = sys_get_temp_dir().'/output.tsv';
 
@@ -127,7 +127,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_name()
+    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_name(): void
     {
         $csv_file = sys_get_temp_dir().'/output.csv';
 
@@ -146,7 +146,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number()
+    public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number(): void
     {
         $tsv_file = sys_get_temp_dir().'/output.tsv';
 
@@ -166,7 +166,7 @@ class ConvertFromXLSConverterTest extends ConverterTestCase
     }
 
     /** @test */
-    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number()
+    public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number(): void
     {
         $csv_file = sys_get_temp_dir().'/output.csv';
 
