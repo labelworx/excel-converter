@@ -8,12 +8,12 @@ use Tests\ConverterTestCase;
 
 class ConvertFromXLSXTest extends ConverterTestCase
 {
-    private const XLSX_FILE = __DIR__.'/../../files/excel.xlsx';
+    private const XLSX_FILE = __DIR__ . '/../../files/excel.xlsx';
 
     /** @test */
     public function an_xlsx_file_can_be_converted_to_a_csv(): void
     {
-        $csv_file = sys_get_temp_dir().'/from_xlsx.csv';
+        $csv_file = sys_get_temp_dir() . '/from_xlsx.csv';
 
         ExcelConverter::source(self::XLSX_FILE)->toCSV($csv_file);
 
@@ -32,7 +32,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_can_be_converted_to_a_tsv(): void
     {
-        $tsv_file = sys_get_temp_dir().'/from_xlsx.tsv';
+        $tsv_file = sys_get_temp_dir() . '/from_xlsx.tsv';
 
         ExcelConverter::source(self::XLSX_FILE)->toTSV($tsv_file);
 
@@ -51,7 +51,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_can_be_converted_to_a_tsv_without_an_enclosure(): void
     {
-        $tsv_file = sys_get_temp_dir().'/from_xls.tsv';
+        $tsv_file = sys_get_temp_dir() . '/from_xls.tsv';
 
         ExcelConverter::source(self::XLSX_FILE)->toTSV($tsv_file, '');
 
@@ -70,7 +70,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_name(): void
     {
-        $tsv_file = sys_get_temp_dir().'/from_xlsx.tsv';
+        $tsv_file = sys_get_temp_dir() . '/from_xlsx.tsv';
 
         ExcelConverter::source(self::XLSX_FILE)
             ->worksheet('Another Sheet')
@@ -90,7 +90,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_name(): void
     {
-        $csv_file = sys_get_temp_dir().'/from_xlsx.csv';
+        $csv_file = sys_get_temp_dir() . '/from_xlsx.csv';
 
         ExcelConverter::source(self::XLSX_FILE)
             ->worksheet('Third Sheet')
@@ -109,7 +109,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number(): void
     {
-        $tsv_file = sys_get_temp_dir().'/from_xlsx.tsv';
+        $tsv_file = sys_get_temp_dir() . '/from_xlsx.tsv';
 
         ExcelConverter::source(self::XLSX_FILE)
             ->worksheet(2) // 'Another Sheet'
@@ -129,7 +129,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_xlsx_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number(): void
     {
-        $csv_file = sys_get_temp_dir().'/from_xlsx.csv';
+        $csv_file = sys_get_temp_dir() . '/from_xlsx.csv';
 
         ExcelConverter::source(self::XLSX_FILE)
             ->worksheet(3) // Third Sheet
@@ -148,7 +148,7 @@ class ConvertFromXLSXTest extends ConverterTestCase
     /** @test */
     public function an_exception_is_thrown_if_the_specified_worksheet_does_not_exist_in_the_xlsx(): void
     {
-        $csv_file = sys_get_temp_dir().'/output.csv';
+        $csv_file = sys_get_temp_dir() . '/output.csv';
 
         $this->expectException(ExcelConverterException::class);
         $this->expectExceptionMessage('Worksheet not found [invalid]');

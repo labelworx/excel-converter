@@ -7,8 +7,8 @@ use Tests\ConverterTestCase;
 
 class ConvertFromTSVTest extends ConverterTestCase
 {
-    private const TSV_FILE = __DIR__.'/../../files/test.tsv';
-    private const CSV_FILE = __DIR__.'/../../files/out.csv';
+    private const TSV_FILE = __DIR__ . '/../../files/test.tsv';
+    private const CSV_FILE = __DIR__ . '/../../files/out.csv';
 
     /** @test */
     public function a_tsv_file_can_be_converted_to_a_csv(): void

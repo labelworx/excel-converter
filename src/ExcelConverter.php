@@ -152,7 +152,7 @@ class ExcelConverter
         $this->file_type = strtolower($info['extension']);
 
         if (! array_key_exists($this->file_type, $this->registeredConverters())) {
-            throw new ExcelConverterException('File type not supported ['.$this->file_type.']');
+            throw new ExcelConverterException('File type not supported [' . $this->file_type . ']');
         }
     }
 

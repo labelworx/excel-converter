@@ -46,6 +46,7 @@ abstract class BaseConverter
 
     /**
      * BaseConverter constructor.
+     *
      * @param $source
      * @param $destination
      * @param $delimiter

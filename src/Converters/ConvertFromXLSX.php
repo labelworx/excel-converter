@@ -32,6 +32,7 @@ class ConvertFromXLSX extends BaseConverter
             foreach ($cellIterator as $cell) {
                 if (Date::isDateTime($cell)) {
                     $rowData[] = $this->getDate($cell);
+
                     continue;
                 }
 
@@ -41,7 +42,7 @@ class ConvertFromXLSX extends BaseConverter
             $rowData = $this->pruneEmptyLastCell($rowData);
 
             if ($this->destination_enclosure === '') {
-                fwrite($handle, implode($this->destination_delimiter, $rowData)."\n");
+                fwrite($handle, implode($this->destination_delimiter, $rowData) . "\n");
             } else {
                 fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
             }
@@ -52,7 +53,7 @@ class ConvertFromXLSX extends BaseConverter
 
     private function removeNewLines($string): string
     {
-        return str_replace("\n", " ", $string);
+        return str_replace("\n", ' ', $string);
     }
 
     private function getDate($cell): string
