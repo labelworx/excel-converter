@@ -3,6 +3,7 @@
 namespace LabelWorx\ExcelConverter\Converters;
 
 use DateTime;
+use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
@@ -61,15 +62,25 @@ class ConvertFromXLS extends BaseConverter
 
     private function getWorksheet($spreadsheet)
     {
+        if ($this->worksheet === null) {
+            return $spreadsheet->getActiveSheet();
+        }
+
+        $worksheet = null;
+
         if (is_string($this->worksheet)) {
-            return $spreadsheet->getSheetByName($this->worksheet);
+            $worksheet = $spreadsheet->getSheetByName($this->worksheet);
         }
 
-        if (is_int($this->worksheet)) {
-            return $spreadsheet->getSheet($this->worksheet - 1);
+        if (is_null($worksheet) && is_numeric($this->worksheet)) {
+            $worksheet = $spreadsheet->getSheet((int) $this->worksheet - 1);
         }
 
-        return $spreadsheet->getActiveSheet();
+        if (is_null($worksheet)) {
+            throw new ExcelConverterException("Worksheet not found [$this->worksheet]");
+        }
+
+        return $worksheet;
     }
 
     private function pruneEmptyLastCell($rowData)

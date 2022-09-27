@@ -2,33 +2,43 @@
 
 namespace LabelWorx\ExcelConverter\Converters;
 
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use DateTime;
+use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ConvertFromXLSX extends BaseConverter
 {
     public function convert(): void
     {
-        $reader = ReaderEntityFactory::createReaderFromFile($this->source);
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(false);
+        $spreadsheet = $reader->load($this->source);
 
-        $reader->open($this->source);
+        $worksheet = $this->getWorksheet($spreadsheet);
 
-        $sheet = $this->getWorksheet($reader);
-
-        $this->processSheet($sheet);
-
-        $reader->close();
+        $this->processSheet($worksheet);
     }
 
-    private function processSheet($sheet): void
+    private function processSheet($worksheet): void
     {
         $handle = fopen($this->destination, 'wb');
 
-        foreach ($sheet->getRowIterator() as $row) {
-            $rowData = $this->format($row->toArray());
-            $rowData = $this->handleCharacterEncoding($rowData);
+        foreach ($worksheet->getRowIterator() as $workSheetRow) {
+            $cellIterator = $workSheetRow->getCellIterator();
+            $cellIterator->setIterateOnlyExistingCells(false);
+
+            $rowData = [];
+            foreach ($cellIterator as $cell) {
+                if (Date::isDateTime($cell)) {
+                    $rowData[] = $this->getDate($cell);
+                    continue;
+                }
+
+                $rowData[] = $this->removeNewLines($cell->getValue());
+            }
+
             $rowData = $this->pruneEmptyLastCell($rowData);
-            $rowData = $this->removeNewLines($rowData);
 
             if ($this->destination_enclosure === '') {
                 fwrite($handle, implode($this->destination_delimiter, $rowData)."\n");
@@ -40,23 +50,37 @@ class ConvertFromXLSX extends BaseConverter
         fclose($handle);
     }
 
-    private function handleCharacterEncoding($rowData): array
+    private function removeNewLines($string): string
     {
-        return array_map(
-            static function ($arg) {
-                return mb_convert_encoding($arg, 'UTF-8', mb_detect_encoding($arg));
-            },
-            $rowData
-        );
+        return str_replace("\n", " ", $string);
     }
 
-    private function removeNewLines($cells): array
+    private function getDate($cell): string
     {
-        foreach ($cells as $key => $cell) {
-            $cells[$key] = str_replace("\n", " ", $cell);
+        return (new DateTime())->setTimestamp(Date::excelToTimestamp($cell->getValue()))->format($this->date_format);
+    }
+
+    private function getWorksheet($spreadsheet)
+    {
+        if ($this->worksheet === null) {
+            return $spreadsheet->getActiveSheet();
         }
 
-        return $cells;
+        $worksheet = null;
+
+        if (is_string($this->worksheet)) {
+            $worksheet = $spreadsheet->getSheetByName($this->worksheet);
+        }
+
+        if (is_null($worksheet) && is_numeric($this->worksheet)) {
+            $worksheet = $spreadsheet->getSheet((int) $this->worksheet - 1);
+        }
+
+        if (is_null($worksheet)) {
+            throw new ExcelConverterException("Worksheet not found [$this->worksheet]");
+        }
+
+        return $worksheet;
     }
 
     private function pruneEmptyLastCell($rowData)
@@ -68,72 +92,5 @@ class ConvertFromXLSX extends BaseConverter
         }
 
         return $rowData;
-    }
-
-    /**
-     * @param $reader
-     * @return mixed
-     * @throws \Exception
-     */
-    private function getWorksheet($reader)
-    {
-        $count = 1;
-        foreach ($reader->getSheetIterator() as $sheet) {
-            if (is_null($this->worksheet)) {
-                return $sheet;
-            }
-
-            if ($sheet->getName() === $this->worksheet) {
-                return $sheet;
-            }
-
-            if ($count === $this->worksheet) {
-                return $sheet;
-            }
-
-            $count++;
-        }
-
-        throw new \Exception("Worksheet not found [{$this->worksheet}]");
-    }
-
-    /**
-     * @param array $row
-     * @return array
-     */
-    private function format(array $row): array
-    {
-        $result = [];
-        foreach ($row as $element) {
-            if (is_string($element)) {
-                $result[] = (string) $element;
-                continue;
-            }
-
-            if (is_int($element)) {
-                $result[] = (string) $element;
-                continue;
-            }
-
-            if (is_float($element)) {
-                $result[] = (float) $element;
-                continue;
-            }
-
-            if (is_bool($element)) {
-                $result[] = $element ? 1 : 0;
-                continue;
-            }
-
-            if (is_object($element)) {
-                if ($element instanceof DateTime) {
-                    $result[] = $element->format($this->date_format);
-                } else {
-                    exit('Element of Type '.get_class($element).'  discovered.');
-                }
-            }
-        }
-
-        return array_map('trim', $result);
     }
 }

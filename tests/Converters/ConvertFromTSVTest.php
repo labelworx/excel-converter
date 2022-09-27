@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Converters;
 
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
 use Tests\ConverterTestCase;
 
-class ConvertFromTSVConverterTest extends ConverterTestCase
+class ConvertFromTSVTest extends ConverterTestCase
 {
     private const TSV_FILE = __DIR__.'/../../files/test.tsv';
     private const CSV_FILE = __DIR__.'/../../files/out.csv';

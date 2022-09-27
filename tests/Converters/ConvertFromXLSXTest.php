@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Converters;
 
+use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
 use Tests\ConverterTestCase;
 
-class ConvertFromXLSXConverterTest extends ConverterTestCase
+class ConvertFromXLSXTest extends ConverterTestCase
 {
     private const XLSX_FILE = __DIR__.'/../../files/excel.xlsx';
 
@@ -142,5 +143,20 @@ class ConvertFromXLSXConverterTest extends ConverterTestCase
         $this->assertSame('something', $lines[0]);
 
         unlink($csv_file);
+    }
+
+    /** @test */
+    public function an_exception_is_thrown_if_the_specified_worksheet_does_not_exist_in_the_xlsx(): void
+    {
+        $csv_file = sys_get_temp_dir().'/output.csv';
+
+        $this->expectException(ExcelConverterException::class);
+        $this->expectExceptionMessage('Worksheet not found [invalid]');
+
+        ExcelConverter::source(self::XLSX_FILE)
+            ->worksheet('invalid')
+            ->toCSV($csv_file);
+
+        $this->assertFileDoesNotExist($csv_file);
     }
 }

@@ -7,62 +7,24 @@ use LabelWorx\ExcelConverter\Converters\ConvertFromCustom;
 use LabelWorx\ExcelConverter\Converters\ConvertFromTSV;
 use LabelWorx\ExcelConverter\Converters\ConvertFromXLS;
 use LabelWorx\ExcelConverter\Converters\ConvertFromXLSX;
+use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 
 class ExcelConverter
 {
-    /**
-     * @var string
-     */
-    private $source;
+    private string $source;
+    private ?string $worksheet = null;
+    private string $destination;
+    private string $file_type;
+    private string $source_delimiter = '';
+    private string $source_enclosure = '';
+    private string $destination_delimiter;
+    private string $destination_enclosure;
+    private string $date_format = 'Y-m-d';
 
     /**
-     * @var string|int|null
+     * @throws ExcelConverterException
      */
-    private $worksheet = null;
-
-    /**
-     * @var string
-     */
-    private $destination;
-
-    /**
-     * @var string
-     */
-    private $file_type;
-
-    /**
-     * @var string
-     */
-    private $source_delimiter;
-
-    /**
-     * @var string source_enclosure
-     */
-    private $source_enclosure;
-
-    /**
-     * @var string
-     */
-    private $destination_delimiter;
-
-    /**
-     * @var string
-     */
-    private $destination_enclosure;
-
-    /**
-     * @var string
-     */
-    private $date_format = 'Y-m-d';
-
-    /**
-     * @param $file
-     * @param null $delimiter
-     * @param null $enclosure
-     * @return $this
-     * @throws \Exception
-     */
-    public function source($file, $delimiter = null, $enclosure = null)
+    public function source($file, $delimiter = null, $enclosure = null): self
     {
         $this->source = $this->validateSource($file);
 
@@ -80,36 +42,30 @@ class ExcelConverter
     }
 
     /**
-     * @param $file
-     * @return string
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    private function validateSource($file)
+    private function validateSource($file): string
     {
         if (! is_string($file)) {
-            throw new \Exception('Specified source file should be a string');
+            throw new ExcelConverterException('Specified source file should be a string');
         }
 
         if (is_dir($file)) {
-            throw new \Exception('Specified source file is a directory');
+            throw new ExcelConverterException('Specified source file is a directory');
         }
 
         if (! file_exists($file)) {
-            throw new \Exception('Specified source does not exist');
+            throw new ExcelConverterException('Specified source does not exist');
         }
 
         if (! is_readable($file)) {
-            throw new \Exception('Specified source file is not readable');
+            throw new ExcelConverterException('Specified source file is not readable');
         }
 
         return $file;
     }
 
-    /**
-     * @param string|int|null $sheet
-     * @return $this
-     */
-    public function worksheet($sheet)
+    public function worksheet(string $sheet): self
     {
         $this->worksheet = $sheet;
 
@@ -117,12 +73,9 @@ class ExcelConverter
     }
 
     /**
-     * @param $destination
-     * @param string $delimiter
-     * @param string $enclosure
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    public function to($destination, $delimiter = ',', $enclosure = '"')
+    public function to($destination, $delimiter = ',', $enclosure = '"'): void
     {
         $this->destination = $this->checkDestinationFile($destination);
         $this->destination_delimiter = $delimiter;
@@ -134,40 +87,29 @@ class ExcelConverter
     }
 
     /**
-     * @param $destination
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    public function toCSV($destination)
+    public function toCSV($destination): void
     {
         $this->to($destination);
     }
 
     /**
-     * @param $destination
-     * @param string $enclosure
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    public function toTSV($destination, $enclosure = '"')
+    public function toTSV($destination, $enclosure = '"'): void
     {
         $this->to($destination, "\t", $enclosure);
     }
 
-    /**
-     * @param $delimiter
-     * @return $this
-     */
-    public function sourceDelimiter($delimiter)
+    public function sourceDelimiter($delimiter): self
     {
         $this->source_delimiter = $delimiter;
 
         return $this;
     }
 
-    /**
-     * @param $format
-     * @return $this
-     */
-    public function exportDateFormat($format)
+    public function exportDateFormat($format): self
     {
         $this->date_format = $format;
 
@@ -175,14 +117,12 @@ class ExcelConverter
     }
 
     /**
-     * @param $destination
-     * @return mixed
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    private function checkDestinationFile($destination)
+    private function checkDestinationFile($destination): string
     {
         if (is_dir($destination)) {
-            throw new \Exception('Destination file is directory');
+            throw new ExcelConverterException('Destination file is directory');
         }
 
         if (file_exists($destination)) {
@@ -193,30 +133,30 @@ class ExcelConverter
     }
 
     /**
-     * @throws \Exception
+     * @throws ExcelConverterException
      */
-    private function checkIfCanConvert()
+    private function checkIfCanConvert(): void
     {
-        if (! $this->source) {
-            throw new \Exception('You did not specify a source file');
+        if (! isset($this->source)) {
+            throw new ExcelConverterException('You did not specify a source file');
         }
 
         if (! $this->destination) {
-            throw new \Exception('You did not specify a destination file');
+            throw new ExcelConverterException('You did not specify a destination file');
         }
     }
 
-    private function detectFileType()
+    private function detectFileType(): void
     {
         $info = pathinfo($this->source);
         $this->file_type = strtolower($info['extension']);
 
         if (! array_key_exists($this->file_type, $this->registeredConverters())) {
-            throw new \Exception('File type not supported ['.$this->file_type.']');
+            throw new ExcelConverterException('File type not supported ['.$this->file_type.']');
         }
     }
 
-    private function registeredConverters()
+    private function registeredConverters(): array
     {
         return [
             'csv' => ConvertFromCSV::class,
@@ -227,7 +167,7 @@ class ExcelConverter
         ];
     }
 
-    private function doConversion()
+    private function doConversion(): void
     {
         $converters = $this->registeredConverters();
 
