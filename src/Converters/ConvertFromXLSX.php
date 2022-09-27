@@ -36,7 +36,8 @@ class ConvertFromXLSX extends BaseConverter
                     continue;
                 }
 
-                $rowData[] = $this->removeNewLines($cell->getValue());
+                $cellData = $cell->getCalculatedValue();
+                $rowData[] = $this->removeNewLines($cellData);
             }
 
             $rowData = $this->pruneEmptyLastCell($rowData);
