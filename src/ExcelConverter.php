@@ -65,7 +65,7 @@ class ExcelConverter
         return $file;
     }
 
-    public function worksheet(string $sheet): self
+    public function worksheet(?string $sheet): self
     {
         $this->worksheet = $sheet;
 
