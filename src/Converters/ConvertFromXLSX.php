@@ -30,6 +30,7 @@ class ConvertFromXLSX extends BaseConverter
 
             $rowData = [];
             foreach ($cellIterator as $cell) {
+
                 if (Date::isDateTime($cell)) {
                     $rowData[] = $this->getDate($cell);
 
@@ -54,12 +55,21 @@ class ConvertFromXLSX extends BaseConverter
 
     private function removeNewLines($string): string
     {
-        return str_replace("\n", ' ', $string);
+        return str_replace("\n", ' ', $string ?: '');
     }
 
     private function getDate($cell): string
     {
-        return (new DateTime())->setTimestamp(Date::excelToTimestamp($cell->getValue()))->format($this->date_format);
+        $value = $cell->getValue();
+
+        // Check if the value is less than 1, indicating a time only
+        if ($value < 1) {
+            // Format as time only
+            return (new DateTime())->setTimestamp(Date::excelToTimestamp($value))->format('H:i:s');
+        }
+
+        // Format as date or date-time
+        return (new DateTime())->setTimestamp(Date::excelToTimestamp($value))->format($this->date_format);
     }
 
     private function getWorksheet($spreadsheet)
