@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         stopOnFailure="false"
-         verbose="true">
-    <testsuites>
-        <testsuite name="Tests">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-    <coverage>
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <report>
-            <html outputDirectory="build/html-coverage" lowUpperBound="50" highLowerBound="90"/>
-            <text outputFile="build/coverage.txt" showUncoveredFiles="true" showOnlySummary="true"/>
-        </report>
-    </coverage>
-    <logging>
-        <junit outputFile="build/junit.xml"/>
-    </logging>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" stopOnFailure="false" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="Tests">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <report>
+      <html outputDirectory="build/html-coverage" lowUpperBound="50" highLowerBound="90"/>
+      <text outputFile="build/coverage.txt" showUncoveredFiles="true" showOnlySummary="true"/>
+    </report>
+  </coverage>
+  <logging>
+    <junit outputFile="build/junit.xml"/>
+  </logging>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
 </phpunit>
