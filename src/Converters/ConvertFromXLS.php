@@ -59,7 +59,11 @@ class ConvertFromXLS extends BaseConverter
 
     private function getDate($cell): string
     {
-        $value = $cell->getValue();
+        $value = $cell->getCalculatedValue();
+
+        if ($value === null || $value === '') {
+            return '';
+        }
 
         // Check if the value is less than 1, indicating a time only
         if ($value < 1) {
