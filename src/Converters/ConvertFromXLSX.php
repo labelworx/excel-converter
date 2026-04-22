@@ -11,7 +11,7 @@ class ConvertFromXLSX extends BaseConverter
 {
     public function convert(): void
     {
-        $reader = new Xlsx();
+        $reader = new Xlsx;
         $reader->setReadDataOnly(false);
         $spreadsheet = $reader->load($this->source);
 
@@ -60,16 +60,20 @@ class ConvertFromXLSX extends BaseConverter
 
     private function getDate($cell): string
     {
-        $value = $cell->getValue();
+        $value = $cell->getCalculatedValue();
+
+        if ($value === null || $value === '') {
+            return '';
+        }
 
         // Check if the value is less than 1, indicating a time only
         if ($value < 1) {
             // Format as time only
-            return (new DateTime())->setTimestamp(Date::excelToTimestamp($value))->format('H:i:s');
+            return (new DateTime)->setTimestamp(Date::excelToTimestamp($value))->format('H:i:s');
         }
 
         // Format as date or date-time
-        return (new DateTime())->setTimestamp(Date::excelToTimestamp($value))->format($this->date_format);
+        return (new DateTime)->setTimestamp(Date::excelToTimestamp($value))->format($this->date_format);
     }
 
     private function getWorksheet($spreadsheet)
