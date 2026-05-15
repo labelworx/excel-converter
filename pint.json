@@ -1,10 +1,11 @@
 {
     "preset": "laravel",
     "rules": {
+        "fully_qualified_strict_types": false,
         "class_attributes_separation": {
             "elements": {
-                "method":"one",
-                "trait_import":"none"
+                "method": "one",
+                "trait_import": "none"
             }
         },
         "concat_space": {

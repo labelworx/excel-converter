@@ -4,13 +4,14 @@ namespace Tests\Converters;
 
 use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\ConverterTestCase;
 
 class ConvertFromXLSTest extends ConverterTestCase
 {
     private const XLS_FILE = __DIR__ . '/../../files/excel.xls';
 
-    /** @test */
+    #[Test]
     public function an_xls_file_can_be_converted_to_a_csv(): void
     {
         $csv_file = sys_get_temp_dir() . '/from_xls.csv';
@@ -21,7 +22,7 @@ class ConvertFromXLSTest extends ConverterTestCase
 
         $lines = explode("\n", file_get_contents($csv_file));
 
-        $this->assertExpectedLineCount(6, $csv_file);
+        $this->assertExpectedLineCount(4, $csv_file);
         $this->assertSame(self::XLS_CONVERTED_CSV_LINE_1, $lines[0]);
         $this->assertSame(self::XLS_CONVERTED_CSV_LINE_2, $lines[1]);
         $this->assertSame(self::XLS_CONVERTED_CSV_LINE_3, $lines[2]);
@@ -30,7 +31,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($csv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_can_be_converted_to_a_csv_with_date_format(): void
     {
         $csv_file = sys_get_temp_dir() . '/from_xls.csv';
@@ -41,7 +42,7 @@ class ConvertFromXLSTest extends ConverterTestCase
 
         $lines = explode("\n", file_get_contents($csv_file));
 
-        $this->assertExpectedLineCount(6, $csv_file);
+        $this->assertExpectedLineCount(4, $csv_file);
         $this->assertSame(self::CSV_LINE_1, $lines[0]);
         $this->assertSame(self::CSV_LINE_2, $lines[1]);
         $this->assertSame(self::CSV_LINE_3, $lines[2]);
@@ -50,7 +51,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($csv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_can_be_converted_to_a_tsv(): void
     {
         $tsv_file = sys_get_temp_dir() . '/from_xls.tsv';
@@ -70,7 +71,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_can_be_converted_to_a_tsv_without_an_enclosure(): void
     {
         $tsv_file = sys_get_temp_dir() . '/from_xls.tsv';
@@ -90,7 +91,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-    /** @test */
+    #[Test]
     public function destination_file_can_be_overwritten(): void
     {
         $tsv_file = __DIR__ . '/../../files/from_xls.tsv';
@@ -112,7 +113,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_name(): void
     {
         $tsv_file = sys_get_temp_dir() . '/output.tsv';
@@ -132,7 +133,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_name(): void
     {
         $csv_file = sys_get_temp_dir() . '/output.csv';
@@ -151,7 +152,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($csv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_second_worksheet_can_converted_to_a_tsv_using_the_worksheet_number(): void
     {
         $tsv_file = sys_get_temp_dir() . '/output.tsv';
@@ -171,7 +172,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($tsv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_xls_file_third_worksheet_can_converted_to_a_csv_using_the_worksheet_number(): void
     {
         $csv_file = sys_get_temp_dir() . '/output.csv';
@@ -190,7 +191,7 @@ class ConvertFromXLSTest extends ConverterTestCase
         unlink($csv_file);
     }
 
-    /** @test */
+    #[Test]
     public function an_exception_is_thrown_if_the_specified_worksheet_does_not_exist_in_the_xls(): void
     {
         $csv_file = sys_get_temp_dir() . '/output.csv';

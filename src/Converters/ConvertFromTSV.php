@@ -10,7 +10,7 @@ class ConvertFromTSV extends BaseConverter
         $destination_handle = fopen($this->destination, 'wb');
 
         while (($row = fgetcsv($source_handle, 0, "\t")) !== false) {
-            fputcsv($destination_handle, $row, $this->destination_delimiter, $this->destination_enclosure);
+            fputcsv($destination_handle, $row, $this->destination_delimiter, $this->destination_enclosure ?: '"');
         }
 
         fclose($source_handle);

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" stopOnFailure="false" cacheDirectory=".phpunit.cache">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.0/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="Tests">
       <directory>./tests</directory>
     </testsuite>
   </testsuites>
-  <coverage>
-    <report>
-      <html outputDirectory="build/html-coverage" lowUpperBound="50" highLowerBound="90"/>
-      <text outputFile="build/coverage.txt" showUncoveredFiles="true" showOnlySummary="true"/>
-    </report>
-  </coverage>
-  <logging>
+<logging>
     <junit outputFile="build/junit.xml"/>
   </logging>
   <source>

@@ -3,6 +3,7 @@
 namespace Tests\Converters;
 
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\ConverterTestCase;
 
 class ConvertFromTSVTest extends ConverterTestCase
@@ -10,7 +11,7 @@ class ConvertFromTSVTest extends ConverterTestCase
     private const TSV_FILE = __DIR__ . '/../../files/test.tsv';
     private const CSV_FILE = __DIR__ . '/../../files/out.csv';
 
-    /** @test */
+    #[Test]
     public function a_tsv_file_can_be_converted_to_a_csv(): void
     {
         ExcelConverter::source(self::TSV_FILE)->toCSV(self::CSV_FILE);

@@ -12,7 +12,7 @@ use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 class ExcelConverter
 {
     private string $source;
-    private ?string $worksheet = null;
+    private int|string|null $worksheet = null;
     private string $destination;
     private string $file_type;
     private string $source_delimiter = '';
@@ -24,17 +24,13 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    public function source($file, $delimiter = null, $enclosure = null): self
+    public function source(mixed $file, ?string $delimiter = null, ?string $enclosure = null): self
     {
         $this->source = $this->validateSource($file);
-
-        if ($delimiter) {
-            $this->source_delimiter = $delimiter;
-        }
-
-        if ($enclosure) {
-            $this->source_enclosure = $enclosure;
-        }
+        $this->source_delimiter = $delimiter ?? '';
+        $this->source_enclosure = $enclosure ?? '';
+        $this->worksheet = null;
+        $this->date_format = 'Y-m-d';
 
         $this->detectFileType();
 
@@ -44,7 +40,7 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    private function validateSource($file): string
+    private function validateSource(mixed $file): string
     {
         if (! is_string($file)) {
             throw new ExcelConverterException('Specified source file should be a string');
@@ -65,7 +61,7 @@ class ExcelConverter
         return $file;
     }
 
-    public function worksheet(?string $sheet): self
+    public function worksheet(int|string|null $sheet): self
     {
         $this->worksheet = $sheet;
 
@@ -75,7 +71,7 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    public function to($destination, $delimiter = ',', $enclosure = '"'): void
+    public function to(string $destination, string $delimiter = ',', string $enclosure = '"'): void
     {
         $this->destination = $this->checkDestinationFile($destination);
         $this->destination_delimiter = $delimiter;
@@ -89,7 +85,7 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    public function toCSV($destination): void
+    public function toCSV(string $destination): void
     {
         $this->to($destination);
     }
@@ -97,19 +93,19 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    public function toTSV($destination, $enclosure = '"'): void
+    public function toTSV(string $destination, string $enclosure = '"'): void
     {
         $this->to($destination, "\t", $enclosure);
     }
 
-    public function sourceDelimiter($delimiter): self
+    public function sourceDelimiter(string $delimiter): self
     {
         $this->source_delimiter = $delimiter;
 
         return $this;
     }
 
-    public function exportDateFormat($format): self
+    public function exportDateFormat(string $format): self
     {
         $this->date_format = $format;
 
@@ -119,8 +115,12 @@ class ExcelConverter
     /**
      * @throws ExcelConverterException
      */
-    private function checkDestinationFile($destination): string
+    private function checkDestinationFile(string $destination): string
     {
+        if ($destination === '') {
+            throw new ExcelConverterException('You did not specify a destination file');
+        }
+
         if (is_dir($destination)) {
             throw new ExcelConverterException('Destination file is directory');
         }
@@ -139,10 +139,6 @@ class ExcelConverter
     {
         if (! isset($this->source)) {
             throw new ExcelConverterException('You did not specify a source file');
-        }
-
-        if (! $this->destination) {
-            throw new ExcelConverterException('You did not specify a destination file');
         }
     }
 

@@ -2,111 +2,13 @@
 
 namespace LabelWorx\ExcelConverter\Converters;
 
-use DateTime;
-use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class ConvertFromXLSX extends BaseConverter
+class ConvertFromXLSX extends AbstractConvertFromExcel
 {
-    public function convert(): void
+    protected function createReader(): IReader
     {
-        $reader = new Xlsx;
-        $reader->setReadDataOnly(false);
-        $spreadsheet = $reader->load($this->source);
-
-        $worksheet = $this->getWorksheet($spreadsheet);
-
-        $this->processSheet($worksheet);
-    }
-
-    private function processSheet($worksheet): void
-    {
-        $handle = fopen($this->destination, 'wb');
-
-        foreach ($worksheet->getRowIterator() as $workSheetRow) {
-            $cellIterator = $workSheetRow->getCellIterator();
-            $cellIterator->setIterateOnlyExistingCells(false);
-
-            $rowData = [];
-            foreach ($cellIterator as $cell) {
-
-                if (Date::isDateTime($cell)) {
-                    $rowData[] = $this->getDate($cell);
-
-                    continue;
-                }
-
-                $cellData = $cell->getCalculatedValue();
-                $rowData[] = $this->removeNewLines($cellData);
-            }
-
-            $rowData = $this->pruneEmptyLastCell($rowData);
-
-            if ($this->destination_enclosure === '') {
-                fwrite($handle, implode($this->destination_delimiter, $rowData) . "\n");
-            } else {
-                fputcsv($handle, $rowData, $this->destination_delimiter, $this->destination_enclosure);
-            }
-        }
-
-        fclose($handle);
-    }
-
-    private function removeNewLines($string): string
-    {
-        return str_replace("\n", ' ', $string ?: '');
-    }
-
-    private function getDate($cell): string
-    {
-        $value = $cell->getCalculatedValue();
-
-        if ($value === null || $value === '') {
-            return '';
-        }
-
-        // Check if the value is less than 1, indicating a time only
-        if ($value < 1) {
-            // Format as time only
-            return (new DateTime)->setTimestamp(Date::excelToTimestamp($value))->format('H:i:s');
-        }
-
-        // Format as date or date-time
-        return (new DateTime)->setTimestamp(Date::excelToTimestamp($value))->format($this->date_format);
-    }
-
-    private function getWorksheet($spreadsheet)
-    {
-        if ($this->worksheet === null) {
-            return $spreadsheet->getActiveSheet();
-        }
-
-        $worksheet = null;
-
-        if (is_string($this->worksheet)) {
-            $worksheet = $spreadsheet->getSheetByName($this->worksheet);
-        }
-
-        if (is_null($worksheet) && is_numeric($this->worksheet)) {
-            $worksheet = $spreadsheet->getSheet((int) $this->worksheet - 1);
-        }
-
-        if (is_null($worksheet)) {
-            throw new ExcelConverterException("Worksheet not found [$this->worksheet]");
-        }
-
-        return $worksheet;
-    }
-
-    private function pruneEmptyLastCell($rowData)
-    {
-        $count = count($rowData) - 1;
-
-        if ($rowData[$count] === '') {
-            unset($rowData[$count]);
-        }
-
-        return $rowData;
+        return new Xlsx;
     }
 }
