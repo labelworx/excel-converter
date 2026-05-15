@@ -4,6 +4,7 @@ namespace Tests;
 
 use LabelWorx\ExcelConverter\Exceptions\ExcelConverterException;
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
+use PHPUnit\Framework\Attributes\Test;
 
 class ExceptionTest extends ConverterTestCase
 {
@@ -11,7 +12,7 @@ class ExceptionTest extends ConverterTestCase
     private const UNREADABLE_FILE = __DIR__ . '/../files/unreadable.xls';
     private const CSV_FILE = __DIR__ . '/../files/final.csv';
 
-    /** @test */
+    #[Test]
     public function an_unsupported_file_type_throws_an_exception(): void
     {
         $source_file = __DIR__ . '/../files/unknown.dat';
@@ -22,7 +23,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function none_string_source_file_throws_an_exception(): void
     {
         $source_file = ['something'];
@@ -33,7 +34,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function source_file_is_directory_throws_an_exception(): void
     {
         $source_file = __DIR__ . '/../files';
@@ -44,7 +45,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function source_file_does_not_exist_throws_an_exception(): void
     {
         $source_file = __DIR__ . '/../files/nothing';
@@ -55,7 +56,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function destination_file_is_a_directory_throws_an_exception(): void
     {
         $source_file = __DIR__ . '/../files/excel.xls';
@@ -67,7 +68,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV($destination_file);
     }
 
-    /** @test */
+    #[Test]
     public function no_source_file_throws_an_exception(): void
     {
         $this->expectException(ExcelConverterException::class);
@@ -76,7 +77,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::toCSV(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function no_destination_file_throws_an_exception(): void
     {
         $source_file = __DIR__ . '/../files/excel.xls';
@@ -87,7 +88,7 @@ class ExceptionTest extends ConverterTestCase
         ExcelConverter::source($source_file)->toCSV('');
     }
 
-    /** @test */
+    #[Test]
     public function an_exception_is_thrown_when_the_worksheet_cannot_be_found(): void
     {
         $source_file = __DIR__ . '/../files/excel.xls';
@@ -100,7 +101,7 @@ class ExceptionTest extends ConverterTestCase
             ->toCSV(__DIR__ . '/../files/output.csv');
     }
 
-    /** @test */
+    #[Test]
     public function an_exception_is_thrown_when_a_file_is_unreadable(): void
     {
         copy(self::XLS_FILE, self::UNREADABLE_FILE);

@@ -3,6 +3,7 @@
 namespace Tests\Converters;
 
 use LabelWorx\ExcelConverter\Facades\ExcelConverter;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\ConverterTestCase;
 
 class ConvertFromCustomTest extends ConverterTestCase
@@ -10,7 +11,7 @@ class ConvertFromCustomTest extends ConverterTestCase
     private const TSV_FILE = __DIR__ . '/../../files/test.tsv';
     private const CSV_FILE = __DIR__ . '/../../files/out.csv';
 
-    /** @test */
+    #[Test]
     public function a_tsv_file_can_be_converted_to_a_csv(): void
     {
         ExcelConverter::source(self::TSV_FILE, "\t", '"')->toCSV(self::CSV_FILE);
@@ -27,7 +28,7 @@ class ConvertFromCustomTest extends ConverterTestCase
         unlink(self::CSV_FILE);
     }
 
-    /** @test */
+    #[Test]
     public function a_custom_file_can_be_converted_to_a_custom_file(): void
     {
         $input = __DIR__ . '/../../files/semi-colon.csv';

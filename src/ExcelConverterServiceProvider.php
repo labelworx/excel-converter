@@ -9,7 +9,7 @@ class ExcelConverterServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('lw-excel-converter', function () {
-            return new ExcelConverter();
+            return new ExcelConverter;
         });
     }
 }
